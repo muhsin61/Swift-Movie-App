@@ -26,7 +26,8 @@ struct ContentView: View {
     @State private var page: Int = 1;
     
     @State private var results = [Result]()
-    @State private var total_pages = 0
+    @State private var total_pages = 0;
+    @State private var currentPage = 1;
 
     
     let apiUrl = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1";
@@ -37,9 +38,21 @@ struct ContentView: View {
             await getMovies()
         }
     }
+    func paginationControl(increase: Bool = true){
+        if(increase){
+            if(total_pages > currentPage){
+                currentPage = currentPage + 1;
+            }
+        }else{
+            if(currentPage > 1){
+                currentPage = currentPage - 1;
+            }
+        }
+        searchMovie()
+    }
     func getMovies() async{
         
-        let url = URL(string: apiUrl + "&query=" + srcText + "&page=1")!
+        let url = URL(string: apiUrl + "&query=" + srcText + "&page=" + String(currentPage))!
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data!) {
@@ -50,6 +63,7 @@ struct ContentView: View {
         }.resume() // important
         
     }
+    
     var body: some View {
         VStack {
             Text("Find Movie")
@@ -73,6 +87,16 @@ struct ContentView: View {
                 }
             }
             Spacer()
+            HStack{
+                Button("<"){
+                    paginationControl(increase:false)
+                }
+                Text(String(currentPage))
+                Button(">"){
+                    paginationControl(increase:true)
+                }
+                Text(String(total_pages))
+            }
         }
     }
 }
