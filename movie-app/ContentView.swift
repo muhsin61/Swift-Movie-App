@@ -33,9 +33,12 @@ struct ContentView: View {
     let apiUrl = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1";
     var params = "&query=kara&page=1"
     
-    func searchMovie(){
+    func searchMovie(newSearch: Bool = false){
         Task{
-            await getMovies()
+            if(newSearch){
+                currentPage = 1
+            }
+            await getMovies();
         }
     }
     func paginationControl(increase: Bool = true){
@@ -61,7 +64,6 @@ struct ContentView: View {
                 page = decodedResponse.total_pages
             }
         }.resume() // important
-        
     }
     
     var body: some View {
@@ -73,7 +75,7 @@ struct ContentView: View {
             HStack{
                 TextField("Search movie", text: $srcText)
                 Button("Search") {
-                    searchMovie()
+                    searchMovie(newSearch: true)
                 }
             }
             .padding()
