@@ -26,7 +26,7 @@ struct ContentView: View {
     @State private var page: Int = 1;
     
     @State private var results = [Result]()
-    @State private var total_pages = 0;
+    @State private var total_pages = 1;
     @State private var currentPage = 1;
 
     
@@ -91,10 +91,12 @@ struct ContentView: View {
                 Button("<"){
                     paginationControl(increase:false)
                 }
+                .disabled(currentPage == 1)
                 Text(String(currentPage))
                 Button(">"){
                     paginationControl(increase:true)
                 }
+                .disabled(total_pages == currentPage)
                 Text(String(total_pages))
             }
         }
