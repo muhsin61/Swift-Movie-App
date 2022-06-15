@@ -65,7 +65,6 @@ struct ContentView: View {
             }
         }.resume() // important
     }
-    
     var body: some View {
         VStack {
             Text("Find Movie")
@@ -101,7 +100,58 @@ struct ContentView: View {
                 .disabled(total_pages == currentPage)
                 Text(String(total_pages))
             }
+            HStack{
+                Button("<"){
+                    paginationControl(increase:false)
+                }
+                .disabled(currentPage == 1)
+                if(total_pages < 6){
+                    ForEach(1...total_pages, id: \.self){item in
+                        Button(String(item)){
+                            currentPage = item
+                            searchMovie()
+                        }
+                    }
+                }else{
+                    if(currentPage > 4 && currentPage < (total_pages-4)){
+                        paginationButton(title: "1")
+                        paginationButton(title: "2")
+                        Text("...")
+                        paginationButton(title: String(currentPage))
+                        Text("...")
+                        paginationButton(title: String(total_pages-1))
+                        paginationButton(title: String(total_pages))
+                    }else if(currentPage > (total_pages-4)){
+                        paginationButton(title: "1")
+                        Text("...")
+                        paginationButton(title: String(total_pages-2))
+                        paginationButton(title: String(total_pages-1))
+                        paginationButton(title: String(total_pages))
+                    }else{
+                        paginationButton(title: "1")
+                        paginationButton(title: "2")
+                        paginationButton(title: "3")
+                        Text("...")
+                        paginationButton(title:String(total_pages-1))
+                        paginationButton(title:String(total_pages))
+                    }
+                }
+                Button(">"){
+                    paginationControl(increase:true)
+                }
+                .disabled(total_pages == currentPage)
+            }
         }
+    }
+}
+
+struct paginationButton: View{
+    var title = "";
+    var disable = false;
+    var body: some View{
+        Button(title){
+
+        }.disabled(disable)
     }
 }
 
