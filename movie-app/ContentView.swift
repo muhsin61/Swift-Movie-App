@@ -11,6 +11,7 @@ struct Result: Codable {
     var id: Int
     var original_title: String
     var overview: String
+    var backdrop_path: String
 }
 
 struct Response: Codable {
@@ -82,6 +83,10 @@ struct ContentView: View {
             if(!movieData.isEmpty){
                 List((1...movieData.count), id: \.self) { index in
                     VStack(alignment: .leading) {
+                        AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500" + movieData[index-1].backdrop_path))
+                        .frame(width: 200)
+                        .padding()
+                        Text("https://image.tmdb.org/t/p" + movieData[index-1].backdrop_path)
                         Text(movieData[index-1].original_title)
                         .font(.headline)
                     }
@@ -150,7 +155,7 @@ struct paginationButton: View{
     var disable = false;
     var body: some View{
         Button(title){
-
+            //self.$currentPage = Int(title)
         }.disabled(disable)
     }
 }
