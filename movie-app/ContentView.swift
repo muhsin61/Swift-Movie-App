@@ -82,11 +82,14 @@ struct ContentView: View {
             Text(srcText)
             if(!movieData.isEmpty){
                 List((1...movieData.count), id: \.self) { index in
-                    VStack(alignment: .leading) {
-                        AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500" + movieData[index-1].backdrop_path))
-                        .frame(width: 200)
+                    VStack(alignment: .center) {
+                        AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500" + movieData[index-1].backdrop_path)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            Text("image")
+                        }
+                        .frame(width: 250, height: 200)
                         .padding()
-                        Text("https://image.tmdb.org/t/p" + movieData[index-1].backdrop_path)
                         Text(movieData[index-1].original_title)
                         .font(.headline)
                     }
